@@ -1,0 +1,256 @@
+------------------Advance SAS Class 1-----------------;                                                                                 
+                                                                                                                                        
+Naming Convention :                                                                                                                     
+                                                                                                                                        
+Base SAS |  Proc SQL                                                                                                                    
+Dataset  |  Table                                                                                                                       
+Obs      |  Row                                                                                                                         
+Variable |  Column                                                                                                                      
+;                                                                                                                                       
+                                                                                                                                        
+                                                                                                                                        
+Order of SQL statements                                                                                                                 
+select                                                                                                                                  
+from                                                                                                                                    
+where                                                                                                                                   
+group by                                                                                                                                
+having                                                                                                                                  
+order by                                                                                                                                
+;                                                                                                                                       
+                                                                                                                                        
+data a;                                                                                                                                 
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+                                                                                                                                        
+proc sql;                                                                                                                               
+create table a as select * from sashelp.class;                                                                                          
+quit;                                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+Create your own data ;                                                                                                                  
+                                                                                                                                        
+Base SAS;                                                                                                                               
+                                                                                                                                        
+Data b;                                                                                                                                 
+input id name$ sal;                                                                                                                     
+cards;                                                                                                                                  
+1 Arun 50                                                                                                                               
+2 Ankit 60                                                                                                                              
+3 Shashi 70                                                                                                                             
+;                                                                                                                                       
+run;                                                                                                                                    
+                                                                                                                                        
+----------Alternative in proc Sql;                                                                                                      
+                                                                                                                                        
+proc sql;                                                                                                                               
+create table a                                                                                                                          
+(id num, name char(10) , sal num);                                                                                                      
+insert into  a                                                                                                                          
+values (1,"Arun",50)                                                                                                                    
+values (2,"Ankit",60)                                                                                                                   
+values (3,"Shashi",70);                                                                                                                 
+quit;                                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+Proc sql feedback;                                                                                                                      
+select * from sashelp.class;                                                                                                            
+quit;                                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+Deleting Rows from table/dataset;                                                                                                       
+                                                                                                                                        
+                                                                                                                                        
+data b;                                                                                                                                 
+set sashelp.class;                                                                                                                      
+if age>12 then delete;                                                                                                                  
+run;                                                                                                                                    
+                                                                                                                                        
+proc sql;                                                                                                                               
+create table c as select * from sashelp.class;                                                                                          
+delete from c where age>12;                                                                                                             
+quit;                                                                                                                                   
+                                                                                                                                        
+---------if then concept-------;                                                                                                        
+                                                                                                                                        
+data a;                                                                                                                                 
+length race $10.;                                                                                                                       
+set sashelp.class;                                                                                                                      
+if age<=12 then race="Teen";                                                                                                            
+else race="Adult";                                                                                                                      
+run;                                                                                                                                    
+                                                                                                                                        
+                                                                                                                                        
+proc sql feedback;                                                                                                                      
+create table b as select *,                                                                                                             
+case                                                                                                                                    
+when   age<10 then "Teen"                                                                                                               
+when   age between 11 and 13 then "Mid"                                                                                                 
+else  "Adult"                                                                                                                           
+end as race                                                                                                                             
+from sashelp.class;                                                                                                                     
+quit;                                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+-----------------  if/ where concept---------------;                                                                                    
+data a;                                                                                                                                 
+set sashelp.class;                                                                                                                      
+age_days=age*365;                                                                                                                       
+if age_days > 45000;                                                                                                                    
+run;                                                                                                                                    
+                                                                                                                                        
+data a;                                                                                                                                 
+input x $20.;                                                                                                                           
+cards;                                                                                                                                  
+db2_ibm                                                                                                                                 
+sql_microsoft                                                                                                                           
+Tsql_mongodb                                                                                                                            
+;                                                                                                                                       
+run;                                                                                                                                    
+                                                                                                                                        
+proc sql;                                                                                                                               
+select *, scan(x,1,"_") as new_var from a where calculated new_var="sql";                                                               
+quit;                                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+data a;                                                                                                                                 
+input id$ sal;                                                                                                                          
+cards;                                                                                                                                  
+A 10                                                                                                                                    
+A 10                                                                                                                                    
+h 10                                                                                                                                    
+g 30                                                                                                                                    
+d 20                                                                                                                                    
+c 10                                                                                                                                    
+c 10                                                                                                                                    
+c 20                                                                                                                                    
+c 10                                                                                                                                    
+B 40                                                                                                                                    
+;                                                                                                                                       
+run;                                                                                                                                    
+                                                                                                                                        
+proc sql;                                                                                                                               
+select *, age*365 as age_days from sashelp.class having age_days>4000;                                                                  
+quit;                                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+proc sql;                                                                                                                               
+select * from a group by id;                                                                                                            
+quit;                                                                                                                                   
+                                                                                                                                        
+-------------------Can Use data step option----------;                                                                                  
+proc print data=sashelp.class;                                                                                                          
+run;                                                                                                                                    
+                                                                                                                                        
+inobs, outobs do the same                                                                                                               
+                                                                                                                                        
+proc sql inobs=5;                                                                                                                       
+select * from sashelp.class;                                                                                                            
+quit;                                                                                                                                   
+                                                                                                                                        
+new_var=substr(x,3,4)                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+proc sql outobs=5;                                                                                                                      
+create table a as select name,age,sex, substr(x,3,4) as new_var  from sashelp.class;                                                    
+quit;                                                                                                                                   
+------------------_N_ alternattive--------                                                                                              
+                                                                                                                                        
+data a;                                                                                                                                 
+set sashelp.class;                                                                                                                      
+x=_n_;                                                                                                                                  
+run;                                                                                                                                    
+                                                                                                                                        
+proc sql;                                                                                                                               
+select *,monotonic() as x from sashelp.class;                                                                                           
+quit;                                                                                                                                   
+                                                                                                                                        
+-------------------------------------------------------------------                                                                     
+nodup Alternative                                                                                                                       
+                                                                                                                                        
+proc sql;                                                                                                                               
+select distinct * from a;                                                                                                               
+quit;                                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+Nodupkey alternative                                                                                                                    
+                                                                                                                                        
+proc sql;                                                                                                                               
+select distinct id, sal from a;                                                                                                         
+quit;                                                                                                                                   
+                                                                                                                                        
+------------------------------------------------------------                                                                            
+sub query concept                                                                                                                       
+                                                                                                                                        
+proc sql;                                                                                                                               
+select * from sashelp.class where age= select min(age) from sasuser.admit;                                                              
+quit;                                                                                                                                   
+                                                                                                                                        
+total=sum(sal)                                                                                                                          
+                                                                                                                                        
+proc sql;                                                                                                                               
+select id, sum(sal) as total from a where (select sum(sal) from a)>20 group by id;                                                      
+quit;                                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+*AVG,    MEAN mean or average of values                                                                                                 
+COUNT,   FREQ, N number of nonmissing values                                                                                            
+CSS      corrected sum of squares                                                                                                       
+CV      coefficient of variation (percent)                                                                                              
+MAX     largest value                                                                                                                   
+MIN      smallest value                                                                                                                 
+NMISS   number of missing values                                                                                                        
+PRT      probability of a greater absolute value of student's t                                                                         
+RANGE    range of values                                                                                                                
+STD      standard deviation                                                                                                             
+STDERR   standard error of the mean                                                                                                     
+SUM      sum of values                                                                                                                  
+T       student's t value for testing the hypothesis that the population mean is zero                                                   
+USS      uncorrected sum of squares                                                                                                     
+VAR      variance                                                                                                                       
+;                                                                                                                                       
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+data a;                                                                                                                                 
+input x;                                                                                                                                
+cards;                                                                                                                                  
+1                                                                                                                                       
+2                                                                                                                                       
+3                                                                                                                                       
+4                                                                                                                                       
+5                                                                                                                                       
+6                                                                                                                                       
+;                                                                                                                                       
+run;                                                                                                                                    
+                                                                                                                                        
+                                                                                                                                        
+data b;                                                                                                                                 
+input x;                                                                                                                                
+cards;                                                                                                                                  
+3                                                                                                                                       
+4                                                                                                                                       
+5                                                                                                                                       
+6                                                                                                                                       
+7                                                                                                                                       
+8                                                                                                                                       
+;                                                                                                                                       
+run;                                                                                                                                    
+                                                                                                                                        
+*non correlated                                                                                                                         
+                                                                                                                                        
+any all exists                                                                                                                          
+;                                                                                                                                       
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+----inner join----------                                                                                                                
+proc sql;                                                                                                                               
+select * from a where exists (select x from b where b.x=a.x);                                                                           
+quit;                                                                                                                                   
+                                                                                                                                        
+----left anti join-------                                                                                                               
+proc sql;                                                                                                                               
+select * from a where not exists (Select * from b where b.x eq a.x);                                                                    
+quit;

@@ -1,0 +1,233 @@
+		
+data a;                                                                                                                                 
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+                                                                                                                                        
+%macro b;                                                                                                                               
+data a;                                                                                                                                 
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+%mend b;                                                                                                                                
+                                                                                                                                        
+                                                                                                                                        
+%macro a;                                                                                                                               
+proc print;                                                                                                                             
+run;                                                                                                                                    
+%mend a;                                                                                                                                
+                                                                                                                                        
+                                                                                                                                        
+data b;                                                                                                                                 
+set a;                                                                                                                                  
+run;                                                                                                                                    
+                                                                                                                                        
+proc print;                                                                                                                             
+run;                                                                                                                                    
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+data c;                                                                                                                                 
+set b;                                                                                                                                  
+where age>=12;                                                                                                                          
+run;                                                                                                                                    
+                                                                                                                                        
+%a;                                                                                                                                     
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+%b;                                                                                                                                     
+%a;                                                                                                                                     
+                                                                                                                                        
+                                                                                                                                        
+data a;                                                                                                                                 
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+                                                                                                                                        
+proc print;                                                                                                                             
+quit;                                                                                                                                   
+                                                                                                                                        
+run;                                                                                                                                    
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+%macro arun;                                                                                                                            
+data a;                                                                                                                                 
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+%mend arun;                                                                                                                             
+                                                                                                                                        
+%arun; *calling of macro;                                                                                                               
+                                                                                                                                        
+macro variables always get stored as text/string                                                                                        
+                                                                                                                                        
+%let shashi= "   my name is shashi    ";                                                                                                
+                                                                                                                                        
+%let shashi=   50   ;                                                                                                                   
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+%put *********&shashi****;                                                                                                              
+                                                                                                                                        
+                                                                                                                                        
+%put ****&sysday****;                                                                                                                   
+                                                                                                                                        
+%put &sysdate;                                                                                                                          
+                                                                                                                                        
+%put &sysdate9.;                                                                                                                        
+                                                                                                                                        
+%put &sysver;                                                                                                                           
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+%let a=3+4;                                                                                                                             
+                                                                                                                                        
+                                                                                                                                        
+%put ***%sysevalf(&a)****;                                                                                                              
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+%let a=3.4;                                                                                                                             
+%let b=5.6;                                                                                                                             
+                                                                                                                                        
+%put %sysevalf(&a+&b);                                                                                                                  
+                                                                                                                                        
+%put %eval(&a+&b);                                                                                                                      
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+data sample;                                                                                                                            
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+                                                                                                                                        
+***word scanner;                                                                                                                        
+                                                                                                                                        
+data                                                                                                                                    
+sample                                                                                                                                  
+;                                                                                                                                       
+set                                                                                                                                     
+sashelp                                                                                                                                 
+.                                                                                                                                       
+class                                                                                                                                   
+;                                                                                                                                       
+run                                                                                                                                     
+;                                                                                                                                       
+                                                                                                                                        
+proc                                                                                                                                    
+print                                                                                                                                   
+;                                                                                                                                       
+run                                                                                                                                     
+;                                                                                                                                       
+                                                                                                                                        
+                                                                                                                                        
+%let a=14;                                                                                                                              
+proc print data=a;                                                                                                                      
+where age>&a;                                                                                                                           
+run;                                                                                                                                    
+                                                                                                                                        
+                                                                                                                                        
+Symbol table :                                                                                                                          
+                                                                                                                                        
+                                                                                                                                        
+%let f=arun1;                                                                                                                           
+%macro sample1;                                                                                                                         
+%let z=arun;                                                                                                                            
+data &z;                                                                                                                                
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+%mend sample1;                                                                                                                          
+%sample1;                                                                                                                               
+                                                                                                                                        
+%put _global_;                                                                                                                          
+                                                                                                                                        
+ data &z;                                                                                                                               
+x=1;                                                                                                                                    
+run;                                                                                                                                    
+                                                                                                                                        
+data &f;                                                                                                                                
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+                                                                                                                                        
+                                                                                                                                        
+%put _automatic_;                                                                                                                       
+                                                                                                                                        
+                                                                                                                                        
+%put &syslast;                                                                                                                          
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+LST(local symbol table) local macro var ---*limited to particular macro ;                                                               
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+GST(global symbol table)                                                                                                                
+                                                                                                                                        
+literal " ",' '                                                                                                                         
+numerical                                                                                                                               
+name infile _n_ var1, var2                                                                                                              
+special */+-&%^**                                                                                                                       
+                                                                                                                                        
+                                                                                                                                        
+option mprint;                                                                                                                          
+                                                                                                                                        
+%let f=arun1;                                                                                                                           
+%macro sample1;                                                                                                                         
+%let z=arun;                                                                                                                            
+data &z;                                                                                                                                
+set sashelp.class;                                                                                                                      
+run;                                                                                                                                    
+%mend sample1;                                                                                                                          
+%sample1;                                                                                                                               
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+% & ( macro triggers)                                                                                                                   
+                                                                                                                                        
+%let                                                                                                                                    
+f                                                                                                                                       
+=                                                                                                                                       
+arun1                                                                                                                                   
+;                                                                                                                                       
+%macro                                                                                                                                  
+sample1                                                                                                                                 
+;                                                                                                                                       
+%let                                                                                                                                    
+z                                                                                                                                       
+=                                                                                                                                       
+arun                                                                                                                                    
+;                                                                                                                                       
+data                                                                                                                                    
+&z                                                                                                                                      
+;                                                                                                                                       
+set                                                                                                                                     
+sashelp                                                                                                                                 
+.                                                                                                                                       
+class                                                                                                                                   
+;                                                                                                                                       
+run                                                                                                                                     
+;                                                                                                                                       
+%mend                                                                                                                                   
+sample1                                                                                                                                 
+;                                                                                                                                       
+%sample1                                                                                                                                
+;                                                                                                                                       
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        
+data a;                                                                                                                                 
+set sashelp.class(in=x);                                                                                                                
+set sashelp.class(in=y);                                                                                                                
+put _all_;                                                                                                                              
+run;
+
+
+
+
