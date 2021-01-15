@@ -1,0 +1,96 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 14 00:34:59 2021
+
+@author: u1076082
+"""
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="chatbox" id="app">
+      <div class="colorPanel" :style="{display: colorPanelShown ? &quot;flex&quot;:&quot;none&quot;,opacity: colorPanelShown ? &quot;flex&quot;:&quot;none&quot;}">
+        <div class="colorPanel__colorSlot" v-for="color in colors">
+          <div class="colorPanel__color" :style="{background: color}" @click="setColor(color)"></div>
+        </div>
+      </div>
+      <div class="chatbox__header">
+        <div class="chatbox__headerText">Shashi
+          <div class="chatbox__onlineDot"></div>
+        </div>
+        <div class="chatbox__button" v-on:click="colorPanelShown = !colorPanelShown"></div>
+      </div>
+      <div class="chatbox__messages">
+        <div class="chatbox__messageBox" v-for="message in messages" :class="{&quot;chatbox__messageBox--primary&quot;: message.primary}">
+          <div class="chatbox__message" :class="{&quot;chatbox__message--primary&quot;: message.primary}" :style="{background: message.primary ? chatColor:&quot;inital&quot;}"><%message.text%>
+            <div class="chatbox__tooltip" :class="{
+            'chatbox__tooltip--right' : !message.primary,
+            'chatbox__tooltip--left' : message.primary,
+          }"><%message.date%></div>
+          </div>
+        </div>
+      </div>
+      <div class="chatbox__inputPanel">
+        <input class="chatbox__input" v-model="newMessage" @keyup.enter="send" placeholder="Aa"/>
+        <div class="chatbox__tooltip chatbox__tooltip--bottom" :style="{opacity: (newMessage.length &gt; 2 &amp;&amp; !this.tutorialSeen) ? 0.7:0}">Press enter to send the message</div>
+        <!--.chatbox__button +-->
+      </div>
+    </div>
+      <script>
+        var app = new Vue({
+          el: '#app',
+          delimiters: ["<%","%>"],
+          data: {
+            chatColor: '#0084ff',
+            colorPanelShown: false,
+            newMessage: '',
+            tutorialSeen: false,
+            colors: ['#0084ff','#ffc300','#4af844',
+                     '#7646ff','#a695c7','#ff5ca1',
+                     '#fa3c4c','#f56b78','#33343f'],
+            messages: [
+              {id: 0, text: 'Hi there! ', primary: false, date: moment().format('hh:mm')}
+            ]
+          },
+          methods: {
+            getBotResponse : function(argument) {
+              axios.get('/get',
+                  {
+                    params: {
+                      msg: app.messages[app.messages.length-1].text
+                    }
+                })
+              .then(function (response) {
+                let lastId = app.messages[app.messages.length-1];
+                app.messages.push({id: lastId+1, text: response.data, primary: false, date: moment().format('hh:mm')});
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+
+            },
+            send: function(){
+              if(this.newMessage.length > 0){
+                let lastId = this.messages[this.messages.length-1];
+                this.messages.push({id: lastId+1, text: this.newMessage, primary: true, date: moment().format('hh:mm')});
+                this.newMessage = '';
+                this.tutorialSeen = true;
+                this.getBotResponse();
+              }
+            },
+            setColor: function(color){
+              this.chatColor = color;
+              this.colorPanelShown = false;
+            }
+          }
+        });
+      </script>
+    </div>
+  </body>
+</html>
